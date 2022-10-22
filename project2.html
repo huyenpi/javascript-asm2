@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>project2</title>
+    <style>
+        h1,
+        form,
+        .btn,
+        td {
+            text-align: center;
+        }
+
+        input {
+            margin-top: 1%;
+        }
+
+        .btn {
+            margin: 2%;
+        }
+
+        table,
+        th,
+        td {
+
+            border: 1px solid;
+
+        }
+
+        .col-5 {
+            width: 5%
+        }
+
+        .col-15 {
+            width: 15%
+        }
+
+        .col-30 {
+            width: 30%
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Class Marksheet</h1>
+    <form name='forminput'>
+        <label for="fullname">Họ tên</label>
+        <input type="text" id='fullname' name='fullname'><br>
+        <label for="scoremath">Điểm toán</label>
+        <input type="text" id='scoremath' name='scoremath'><br>
+        <label for="scorephysical">Điểm lý</label>
+        <input type="text" id='scorephysical' name='scorephysical'><br>
+        <label for="scorechemistry">Điểm hóa</label>
+        <input type="text" id='scorechemistry' name='scorechemistry'><br>
+        <input type='button' id='btn1' class='btn' value='Nhập'>
+    </form>
+    <table id='table' style='width:100%'>
+        <tr>
+            <th class='col-5'>STT</th>
+            <th class='col-30'>Họ tên</th>
+            <th class='col-15'>Toán</th>
+            <th class='col-15'>Lý</th>
+            <th class='col-15'>Hóa</th>
+            <th class='col-15'>Trung bình</th>
+        </tr>
+
+    </table>
+    <div class='btn'>
+        <button id='btn2'>Tính điểm trung bình</button>
+        <button id='btn3'>Xác định học sinh giỏi</button>
+    </div>
+
+    <script>
+
+        //nhập tên, điểm vào bảng
+        const button1 = document.getElementById('btn1');
+        button1.addEventListener('click', addRow);
+
+
+
+        const testScore = {
+            name: "",
+            math: 0,
+            physical: 0,
+            chemistry: 0
+        };
+        function addRow() {
+
+            testScore.name = document.forms['forminput']["fullname"].value.toUpperCase();
+            testScore.math = document.forms['forminput']["scoremath"].value;
+            testScore.physical = document.forms['forminput']["scorephysical"].value;
+            testScore.chemistry = document.forms['forminput']["scorechemistry"].value;
+
+            document.forms['forminput']["fullname"].value = "";
+            document.forms['forminput']["scoremath"].value = "";
+            document.forms['forminput']["scorephysical"].value = "";
+            document.forms['forminput']["scorechemistry"].value = "";
+
+
+            const table = document.getElementById('table');
+
+
+            const newRow = table.insertRow(-1);
+            const cell1 = newRow.insertCell(0);
+            const cell2 = newRow.insertCell(1);
+            const cell3 = newRow.insertCell(2);
+            const cell4 = newRow.insertCell(3);
+            const cell5 = newRow.insertCell(4);
+            const cell6 = newRow.insertCell(5);
+
+
+            for (let i = 0, row; row = table.rows[i]; i++) {
+
+
+                cell1.innerHTML = i;
+
+                cell2.innerHTML = testScore.name;
+                cell3.innerHTML = testScore.math;
+                cell4.innerHTML = testScore.physical;
+                cell5.innerHTML = testScore.chemistry;
+                cell6.innerHTML = '?';
+
+            }
+
+        }
+
+        //tính điểm trung bình
+        const button2 = document.getElementById('btn2');
+        button2.addEventListener('click', addMedium);
+        function addMedium() {
+            for (let i = 1, row; row = table.rows[i]; i++) {
+
+                let math = parseFloat(row.cells[2].innerHTML);
+                let physical = parseFloat(row.cells[3].innerHTML);
+                let chemistry = parseFloat(row.cells[4].innerHTML);
+
+                let scoreMedium = (math + physical + chemistry) / 3;
+                row.cells[5].innerHTML = scoreMedium.toFixed(1);
+
+            }
+        }
+        //xác định học sinh giỏi
+        const button3 = document.getElementById('btn3');
+        button3.addEventListener('click', goodStudent);
+        function goodStudent() {
+            for (let i = 1, row; row = table.rows[i]; i++) {
+                let medium = parseFloat(row.cells[5].innerHTML);
+                if (medium >= 8) {
+                    table.rows[i].style = 'color: red';
+                }
+            }
+        }
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>
